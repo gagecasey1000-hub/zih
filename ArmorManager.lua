@@ -1,11 +1,11 @@
 --[[ ArmorManager Module Script
-Places this in ServerScriptService or as a ModuleScript in ReplicatedStorage
+Place in ServerScriptService
 Handles armor equipping/unequipping logic ]]
 
 local ArmorManager = {}
 ArmorManager.__index = ArmorManager
 
-local Assets = game:GetService("ReplicatedFirst"):WaitForChild("zih")
+local Assets = game:GetService("ServerStorage"):WaitForChild("zih")
 
 function ArmorManager.new(character)
 	local self = setmetatable({}, ArmorManager)
@@ -35,6 +35,11 @@ function ArmorManager:WeldArmor()
 	local function weldDescendants(parent, targetParent)
 		for _, part in pairs(parent:GetDescendants()) do
 			if part:IsA("BasePart") then
+				-- Skip the head part, use top instead
+				if part.Name == "Head" then
+					return
+				end
+				
 				local weld = Instance.new("Weld")
 				weld.Part0 = part
 				weld.Part1 = targetParent
